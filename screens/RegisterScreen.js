@@ -22,8 +22,7 @@ export default class HomeScreen extends React.Component {
     })
   }
 
-  handleSignUp = () => {
-    console.log('want to sign up')
+  handleSignUp = async () => {
     try {
       if (this.state.firstName === null || this.state.lastName === null || this.state.email === null || this.state.password1 === null || this.state.password2 === null) {
         // alert('Please fill out all fields');
@@ -34,7 +33,14 @@ export default class HomeScreen extends React.Component {
         this.onRegisterFail.bind(this)('Passwords must match')
         // return;
       } else {
-        firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password1)
+        firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password1).then((cred) => {
+          console.log(cred.user.uid)
+          firebase.database().ref('users/' + cred.user.uid).set({
+            first: this.state.firstName,
+            last: this.state.lastName,
+            email: this.state.email
+          })
+        })
         alert('Account Created');
       }
     }
