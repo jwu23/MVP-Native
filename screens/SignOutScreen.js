@@ -1,17 +1,27 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import * as firebase from 'firebase';
+import LoginScreen from './LoginScreen.js';
 
-import { createAppContainer, createMaterialTopTabNavigator } from 'react-navigation';
-import UserLists from './UserLists.js';
-import UserFriends from './UserFriends.js';
-import UserNavigator from './UserNavigator.js';
+export default class SignOutScreen extends React.Component {
 
-export default class DashboardScreen extends React.Component {
+  handleLogout = () => {
+    try {
+      firebase.auth().signOut();
+      console.log('signed out');
+    }
+    catch (err) {
+      console.log(err.toString());
+    }
+  }
 
   render() {
     return (
-      <UserNavigator/>
+      <View style={styles.container}>
+        <TouchableOpacity style={styles.logoutButton} onPress={this.handleLogout}>
+          <Text>Log Out</Text>
+        </TouchableOpacity>
+      </View>
     )
   }
 }
