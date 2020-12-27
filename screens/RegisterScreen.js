@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import * as firebase from 'firebase';
 
 export default class HomeScreen extends React.Component {
@@ -55,7 +55,9 @@ export default class HomeScreen extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView
+      behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+      style={styles.container}>
         <Text style={styles.title}>Create An Account</Text>
         <View style={styles.inputView}>
           <TextInput style={styles.inputText} autoCorrect={false} autoCapitalize = 'none' placeholder="First Name" onChangeText={text => this.setState({firstName: text})}></TextInput>
@@ -79,7 +81,7 @@ export default class HomeScreen extends React.Component {
         <TouchableOpacity onPress={this.backToLogin}>
           <Text>Already have an account? Login</Text>
         </TouchableOpacity>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
