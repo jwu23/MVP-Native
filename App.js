@@ -35,28 +35,3 @@ class App extends React.Component {
 }
 
 export default App;
-
-
-// import * as React from 'react';
-// import { View, Text } from 'react-native';
-// import { NavigationContainer } from '@react-navigation/native';
-// import { createStackNavigator } from '@react-navigation/stack';
-// import LoginScreen from './screens/LoginScreen.js';
-// import Register from './screens/Register.js';
-
-// const Stack = createStackNavigator();
-
-
-
-// function App({ navigation }) {
-//   return (
-//     <NavigationContainer>
-//       <Stack.Navigator initialRouteName="Login">
-//         <Stack.Screen name="Login" component={LoginScreen} navigation={navigation}/>
-//         <Stack.Screen name="Register" component={Register} navigation={}/>
-//       </Stack.Navigator>
-//     </NavigationContainer>
-//   );
-// }
-
-// export default App;
