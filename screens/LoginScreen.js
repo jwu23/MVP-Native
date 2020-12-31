@@ -3,6 +3,7 @@ import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 import RegisterScreen from './RegisterScreen.js';
 import * as firebase from 'firebase';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default class LoginScreen extends React.Component {
   constructor(props) {
@@ -54,23 +55,29 @@ export default class LoginScreen extends React.Component {
 
   render() {
     return (
-    <View style={styles.container}>
-      <Text style={styles.logo}>MVP</Text>
-      <View style={styles.inputView}>
-        <TextInput style={styles.inputText} autoCorrect={false} autoCapitalize = 'none' placeholder="Email" onChangeText={text => this.setState({email: text})}></TextInput>
+    <LinearGradient colors={['blue', 'orange']}
+    style={{flex: 1, opacity: .75}}
+    //  Linear Gradient
+    start={{ x: 1, y: 0 }}
+    end={{ x: 0, y: 1 }}>
+      <View style={styles.container}>
+        <Text style={styles.logo}>MVP</Text>
+        <View style={styles.inputView}>
+          <TextInput style={styles.inputText} autoCorrect={false} autoCapitalize = 'none' placeholder='Email' placeholderTextColor='black' onChangeText={text => this.setState({email: text})}></TextInput>
+        </View>
+        <View style={styles.inputView}>
+          <TextInput style={styles.inputText} autoCorrect={false} autoCapitalize = 'none' placeholder='Password' placeholderTextColor='black' secureTextEntry onChangeText={text => this.setState({password: text})}></TextInput>
+        </View>
+        <Text>{this.state.error}</Text>
+        <TouchableOpacity style={styles.loginButton} onPress={this.handleLogin}>
+          <Text>LOGIN</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={this.handleSignUp}>
+          <Text>Don't have an account? Register</Text>
+        </TouchableOpacity>
+        <StatusBar style='auto' />
       </View>
-      <View style={styles.inputView}>
-        <TextInput style={styles.inputText} autoCorrect={false} autoCapitalize = 'none' placeholder="Password" secureTextEntry onChangeText={text => this.setState({password: text})}></TextInput>
-      </View>
-      <Text>{this.state.error}</Text>
-      <TouchableOpacity style={styles.loginButton} onPress={this.handleLogin}>
-        <Text>LOGIN</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={this.handleSignUp}>
-        <Text>Don't have an account? Register</Text>
-      </TouchableOpacity>
-      <StatusBar style="auto" />
-    </View>
+    </LinearGradient>
   );
 }
 }
@@ -78,7 +85,7 @@ export default class LoginScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'lightblue',
+    // backgroundColor: 'lightblue',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -90,8 +97,9 @@ const styles = StyleSheet.create({
   },
   inputView: {
     width: '80%',
-    backgroundColor: 'white',
+    // backgroundColor: 'white',
     borderRadius: 25,
+    borderWidth: 1,
     height: 50,
     marginBottom: 20,
     justifyContent: 'center',
@@ -102,8 +110,9 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     width: '80%',
-    backgroundColor: 'green',
+    // backgroundColor: 'green',
     borderRadius: 25,
+    borderWidth: 1,
     height: 50,
     alignItems: 'center',
     justifyContent: 'center',

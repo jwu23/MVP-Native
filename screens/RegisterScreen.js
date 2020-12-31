@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import * as firebase from 'firebase';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default class HomeScreen extends React.Component {
   constructor(props) {
@@ -58,33 +59,40 @@ export default class HomeScreen extends React.Component {
 
   render() {
     return (
-      <KeyboardAvoidingView
-      behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-      style={styles.container}>
-        <Text style={styles.title}>Create An Account</Text>
-        <View style={styles.inputView}>
-          <TextInput style={styles.inputText} autoCorrect={false} autoCapitalize = 'none' placeholder="First Name" onChangeText={text => this.setState({firstName: text})}></TextInput>
-        </View>
-        <View style={styles.inputView}>
-          <TextInput style={styles.inputText} autoCorrect={false} autoCapitalize = 'none' placeholder="Last Name" onChangeText={text => this.setState({lastName: text})}></TextInput>
-        </View>
-        <View style={styles.inputView}>
-          <TextInput style={styles.inputText} autoCorrect={false} autoCapitalize = 'none' placeholder=" Email" onChangeText={text => this.setState({email: text})}></TextInput>
-        </View>
-        <View style={styles.inputView}>
-          <TextInput style={styles.inputText} autoCorrect={false} autoCapitalize = 'none' placeholder="Password" secureTextEntry onChangeText={text => this.setState({password1: text})}></TextInput>
-        </View>
-        <View style={styles.inputView}>
-          <TextInput style={styles.inputText} autoCorrect={false} autoCapitalize = 'none' placeholder="Re-Enter Password" secureTextEntry onChangeText={text => this.setState({password2: text})}></TextInput>
-        </View>
-        <Text>{this.state.error}</Text>
-        <TouchableOpacity style={styles.registerButton} onPress={this.handleSignUp}>
-          <Text>Register</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.backToLogin}>
-          <Text>Already have an account? Login</Text>
-        </TouchableOpacity>
-      </KeyboardAvoidingView>
+      <LinearGradient colors={['blue', 'orange']}
+    style={{flex: 1, opacity: .75}}
+    //  Linear Gradient
+    start={{ x: 1, y: 0 }}
+    end={{ x: 0, y: 1 }}>
+
+        <KeyboardAvoidingView
+        behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+        style={styles.container}>
+          <Text style={styles.title}>Create An Account</Text>
+          <View style={styles.inputView}>
+            <TextInput style={styles.inputText} autoCorrect={false} autoCapitalize = 'none' placeholder="First Name" placeholderTextColor='black' onChangeText={text => this.setState({firstName: text})}></TextInput>
+          </View>
+          <View style={styles.inputView}>
+            <TextInput style={styles.inputText} autoCorrect={false} autoCapitalize = 'none' placeholder="Last Name" placeholderTextColor='black' onChangeText={text => this.setState({lastName: text})}></TextInput>
+          </View>
+          <View style={styles.inputView}>
+            <TextInput style={styles.inputText} autoCorrect={false} autoCapitalize = 'none' placeholder=" Email" placeholderTextColor='black' onChangeText={text => this.setState({email: text})}></TextInput>
+          </View>
+          <View style={styles.inputView}>
+            <TextInput style={styles.inputText} autoCorrect={false} autoCapitalize = 'none' placeholder="Password" placeholderTextColor='black' secureTextEntry onChangeText={text => this.setState({password1: text})}></TextInput>
+          </View>
+          <View style={styles.inputView}>
+            <TextInput style={styles.inputText} autoCorrect={false} autoCapitalize = 'none' placeholder="Re-Enter Password" placeholderTextColor='black' secureTextEntry onChangeText={text => this.setState({password2: text})}></TextInput>
+          </View>
+          <Text>{this.state.error}</Text>
+          <TouchableOpacity style={styles.registerButton} onPress={this.handleSignUp}>
+            <Text>Register</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.backToLogin}>
+            <Text>Already have an account? Login</Text>
+          </TouchableOpacity>
+        </KeyboardAvoidingView>
+      </LinearGradient>
     );
   }
 }
@@ -94,7 +102,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'lightblue'
+    // backgroundColor: 'lightblue'
   },
   title: {
     fontWeight: 'bold',
@@ -105,8 +113,9 @@ const styles = StyleSheet.create({
   },
   inputView: {
     width: '80%',
-    backgroundColor: 'white',
+    // backgroundColor: 'white',
     borderRadius: 25,
+    borderWidth: 1,
     height: 50,
     marginBottom: 20,
     justifyContent: 'center',
@@ -117,8 +126,9 @@ const styles = StyleSheet.create({
   },
   registerButton: {
     width: '80%',
-    backgroundColor: 'green',
+    // backgroundColor: 'green',
     borderRadius: 25,
+    borderWidth: 1,
     height: 50,
     alignItems: 'center',
     justifyContent: 'center',
