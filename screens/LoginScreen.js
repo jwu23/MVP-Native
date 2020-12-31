@@ -69,7 +69,7 @@ export default class LoginScreen extends React.Component {
         </View>
         <Text>{this.state.error}</Text>
         <TouchableOpacity style={styles.loginButton} onPress={this.handleLogin}>
-          <Text style={{color: 'white'}}>LOGIN</Text>
+          <Text style={styles.textColor}>LOGIN</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={this.handleSignUp}>
           <Text style={styles.textColor}>Don't have an account? Register</Text>
