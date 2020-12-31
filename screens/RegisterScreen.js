@@ -35,6 +35,9 @@ export default class HomeScreen extends React.Component {
       } else {
         firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password1).then((cred) => {
           console.log(cred.user.uid)
+          cred.user.updateProfile({
+            displayName: `${this.state.firstName} ${this.state.lastName}`
+          })
           firebase.database().ref('users/' + cred.user.uid).set({
             first: this.state.firstName,
             last: this.state.lastName,
