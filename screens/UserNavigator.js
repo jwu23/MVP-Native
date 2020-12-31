@@ -12,21 +12,24 @@ const Tab = createMaterialBottomTabNavigator();
 export default function UserNavigator() {
   return (
     <NavigationContainer>
-      <Tab.Navigator>
+      <Tab.Navigator shifting={true}>
         <Tab.Screen name="Lists" component={UserLists} options={{
           tabBarIcon: ({color}) => (
             <Ionicons name="list-outline" color={color} size={25}/>
           ),
+          tabBarColor: '#0576ff'
         }}/>
         <Tab.Screen name="Friends" component={UserFriends} options={{
           tabBarIcon: ({color}) => (
             <Ionicons name="people-outline" color={color} size={25}/>
           ),
+          tabBarColor: 'orange'
         }}/>
         <Tab.Screen name='Account' component={SignOutScreen} options={{
           tabBarIcon: ({color}) => (
             <Ionicons name="settings-outline" color={color} size={25}/>
           ),
+          tabBarColor: 'green'
         }}/>
       </Tab.Navigator>
     </NavigationContainer>
