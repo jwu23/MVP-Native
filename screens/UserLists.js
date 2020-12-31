@@ -111,12 +111,6 @@ export default class UserLists extends React.Component {
     })
   }
 
-  showList = () => {
-    this.setState({
-      collapsed: !this.state.collapsed
-    })
-  }
-
   render() {
     return (
       <View style={styles.container}>
@@ -204,7 +198,8 @@ const styles = StyleSheet.create({
   },
   newList: {
     width: '20%',
-    backgroundColor: '#24962c',
+    // backgroundColor: '#24962c',
+    backgroundColor: '#0576ff',
     borderRadius: 25,
     height: 50,
     alignItems: 'center',
@@ -247,7 +242,8 @@ const styles = StyleSheet.create({
   },
   newListButton: {
     width: '80%',
-    backgroundColor: '#24962c',
+    // backgroundColor: '#24962c',
+    backgroundColor: '#0576ff',
     borderRadius: 25,
     height: 50,
     alignItems: 'center',
