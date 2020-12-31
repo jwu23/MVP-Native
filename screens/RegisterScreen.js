@@ -70,26 +70,26 @@ export default class HomeScreen extends React.Component {
         style={styles.container}>
           <Text style={styles.title}>Create An Account</Text>
           <View style={styles.inputView}>
-            <TextInput style={styles.inputText} autoCorrect={false} autoCapitalize = 'none' placeholder="First Name" placeholderTextColor='black' onChangeText={text => this.setState({firstName: text})}></TextInput>
+            <TextInput style={styles.inputText} autoCorrect={false} autoCapitalize = 'none' placeholder="First Name" placeholderTextColor='white' onChangeText={text => this.setState({firstName: text})}></TextInput>
           </View>
           <View style={styles.inputView}>
-            <TextInput style={styles.inputText} autoCorrect={false} autoCapitalize = 'none' placeholder="Last Name" placeholderTextColor='black' onChangeText={text => this.setState({lastName: text})}></TextInput>
+            <TextInput style={styles.inputText} autoCorrect={false} autoCapitalize = 'none' placeholder="Last Name" placeholderTextColor='white' onChangeText={text => this.setState({lastName: text})}></TextInput>
           </View>
           <View style={styles.inputView}>
-            <TextInput style={styles.inputText} autoCorrect={false} autoCapitalize = 'none' placeholder=" Email" placeholderTextColor='black' onChangeText={text => this.setState({email: text})}></TextInput>
+            <TextInput style={styles.inputText} autoCorrect={false} autoCapitalize = 'none' placeholder=" Email" placeholderTextColor='white' onChangeText={text => this.setState({email: text})}></TextInput>
           </View>
           <View style={styles.inputView}>
-            <TextInput style={styles.inputText} autoCorrect={false} autoCapitalize = 'none' placeholder="Password" placeholderTextColor='black' secureTextEntry onChangeText={text => this.setState({password1: text})}></TextInput>
+            <TextInput style={styles.inputText} autoCorrect={false} autoCapitalize = 'none' placeholder="Password" placeholderTextColor='white' secureTextEntry onChangeText={text => this.setState({password1: text})}></TextInput>
           </View>
           <View style={styles.inputView}>
-            <TextInput style={styles.inputText} autoCorrect={false} autoCapitalize = 'none' placeholder="Re-Enter Password" placeholderTextColor='black' secureTextEntry onChangeText={text => this.setState({password2: text})}></TextInput>
+            <TextInput style={styles.inputText} autoCorrect={false} autoCapitalize = 'none' placeholder="Re-Enter Password" placeholderTextColor='white' secureTextEntry onChangeText={text => this.setState({password2: text})}></TextInput>
           </View>
           <Text>{this.state.error}</Text>
           <TouchableOpacity style={styles.registerButton} onPress={this.handleSignUp}>
-            <Text>Register</Text>
+            <Text style={styles.textColor}>Register</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.backToLogin}>
-            <Text>Already have an account? Login</Text>
+            <Text style={styles.textColor}>Already have an account? Login</Text>
           </TouchableOpacity>
         </KeyboardAvoidingView>
       </LinearGradient>
@@ -116,19 +116,25 @@ const styles = StyleSheet.create({
     // backgroundColor: 'white',
     borderRadius: 25,
     borderWidth: 1,
+    borderColor: 'white',
     height: 50,
     marginBottom: 20,
     justifyContent: 'center',
     padding: 20
   },
   inputText: {
-    height: 50
+    height: 50,
+    color: 'white'
+  },
+  textColor: {
+    color: 'white'
   },
   registerButton: {
     width: '80%',
     // backgroundColor: 'green',
     borderRadius: 25,
     borderWidth: 1,
+    borderColor: 'white',
     height: 50,
     alignItems: 'center',
     justifyContent: 'center',

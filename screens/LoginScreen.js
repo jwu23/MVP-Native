@@ -34,7 +34,6 @@ export default class LoginScreen extends React.Component {
           } else {
             this.onLoginFail.bind(this)('Email/Password combination is incorrect')
           }
-          // console.log(err.code)
         })
     }
     catch (err) {
@@ -63,17 +62,17 @@ export default class LoginScreen extends React.Component {
       <View style={styles.container}>
         <Text style={styles.logo}>MVP</Text>
         <View style={styles.inputView}>
-          <TextInput style={styles.inputText} autoCorrect={false} autoCapitalize = 'none' placeholder='Email' placeholderTextColor='black' onChangeText={text => this.setState({email: text})}></TextInput>
+          <TextInput style={styles.inputText} autoCorrect={false} autoCapitalize = 'none' placeholder='Email' placeholderTextColor='white' onChangeText={text => this.setState({email: text})}></TextInput>
         </View>
         <View style={styles.inputView}>
-          <TextInput style={styles.inputText} autoCorrect={false} autoCapitalize = 'none' placeholder='Password' placeholderTextColor='black' secureTextEntry onChangeText={text => this.setState({password: text})}></TextInput>
+          <TextInput style={styles.inputText} autoCorrect={false} autoCapitalize = 'none' placeholder='Password' placeholderTextColor='white' secureTextEntry onChangeText={text => this.setState({password: text})}></TextInput>
         </View>
         <Text>{this.state.error}</Text>
         <TouchableOpacity style={styles.loginButton} onPress={this.handleLogin}>
-          <Text>LOGIN</Text>
+          <Text style={{color: 'white'}}>LOGIN</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={this.handleSignUp}>
-          <Text>Don't have an account? Register</Text>
+          <Text style={styles.textColor}>Don't have an account? Register</Text>
         </TouchableOpacity>
         <StatusBar style='auto' />
       </View>
@@ -100,19 +99,25 @@ const styles = StyleSheet.create({
     // backgroundColor: 'white',
     borderRadius: 25,
     borderWidth: 1,
+    borderColor: 'white',
     height: 50,
     marginBottom: 20,
     justifyContent: 'center',
     padding: 20
   },
   inputText: {
-    height: 50
+    height: 50,
+    color: 'white'
+  },
+  textColor: {
+    color: 'white'
   },
   loginButton: {
     width: '80%',
     // backgroundColor: 'green',
     borderRadius: 25,
     borderWidth: 1,
+    borderColor: 'white',
     height: 50,
     alignItems: 'center',
     justifyContent: 'center',
