@@ -3,12 +3,10 @@ import { Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-
 import UserLists from './UserLists.js';
 import UserFriends from './UserFriends.js';
 import SignOutScreen from './SignOutScreen.js';
 import FriendNavigator from './FriendNavigator.js';
-
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -38,46 +36,3 @@ export default function UserNavigator() {
     </NavigationContainer>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-// import React from 'react';
-// import { View } from 'react-native';
-// import { createAppContainer } from 'react-navigation';
-// import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-// import UserLists from './UserLists.js';
-// import UserFriends from './UserFriends.js';
-
-// const tabNavigator = createMaterialBottomTabNavigator({
-//   Lists: {
-//     screen: UserLists,
-//     navigationOptions: {
-//       tabBarLabel: 'Lists'
-//     }
-//   },
-//   Friends: {
-//     screen: UserFriends,
-//     navigationOptions: {
-//       tabBarLabel: 'Friends'
-//     }
-//   },
-// },
-// {
-//   initialRouteName: 'Lists',
-//   activeColor: 'red',
-//   inactiveColor: 'yellow',
-//   barStyle: {
-//     backgroundColor: 'white'
-//   }
-// }
-// );
-
-// export default createAppContainer(tabNavigator);
