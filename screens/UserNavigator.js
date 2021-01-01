@@ -3,9 +3,12 @@ import { Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
+
 import UserLists from './UserLists.js';
 import UserFriends from './UserFriends.js';
 import SignOutScreen from './SignOutScreen.js';
+import FriendNavigator from './FriendNavigator.js';
+
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -19,7 +22,7 @@ export default function UserNavigator() {
           ),
           tabBarColor: '#0576ff'
         }}/>
-        <Tab.Screen name="Friends" component={UserFriends} options={{
+        <Tab.Screen name="Friends" component={FriendNavigator} options={{
           tabBarIcon: ({color}) => (
             <Ionicons name="people-outline" color={color} size={25}/>
           ),
