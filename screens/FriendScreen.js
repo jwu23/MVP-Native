@@ -4,6 +4,7 @@ import * as firebase from 'firebase';
 import Accordion from 'react-native-collapsible';
 import { List } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 
 
 export default class FriendScreen extends React.Component {
@@ -37,7 +38,7 @@ export default class FriendScreen extends React.Component {
         var temp = child.val();
         lists.push(
           <View key={temp} style={styles.standaloneRowFront}>
-            <Text>{temp}</Text>
+            <Text style={styles.textColor}>{temp}</Text>
           </View>
         );
       })
@@ -49,7 +50,8 @@ export default class FriendScreen extends React.Component {
   mapLists = () => {
     return this.state.userLists.map((name, index) => {
       return (
-        <List.Accordion key={index} title={name} left={img => <List.Icon icon="format-list-bulleted"/>}>
+        // left={img => <List.Icon icon="format-list-bulleted"/>}
+        <List.Accordion key={index} title={name} theme={{ colors: { primary: 'white' }}}>
           {this.mapItems(name)}
         </List.Accordion>
       )
@@ -58,64 +60,28 @@ export default class FriendScreen extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <ScrollView>
-          <View style={styles.listBody}>
-            {this.mapLists()}
-          </View>
-        </ScrollView>
-      </View>
+      <LinearGradient colors={['blue', 'orange']} style={{flex: 1}} start={{ x: 0, y: 1 }} end={{ x: 1, y: 0 }}>
+        <View style={styles.container}>
+          <ScrollView>
+            <View>
+              {this.mapLists()}
+            </View>
+          </ScrollView>
+        </View>
+      </LinearGradient>
     )
   }
 }
 
 const styles = StyleSheet.create({
-  backRightBtn: {
-    alignItems: 'center',
-    bottom: 0,
-    justifyContent: 'center',
-    position: 'absolute',
-    top: 0,
-    width: 75,
-  },
-  backRightBtnLeft: {
-    backgroundColor: 'red',
-    right: 75,
-  },
-  backRightBtnRight: {
-    backgroundColor: 'blue',
-    right: 0,
+  textColor: {
+    color: 'white'
   },
   standaloneRowFront: {
-    // alignItems: 'center',
-    backgroundColor: 'lightblue',
+    alignItems: 'center',
+    // backgroundColor: 'lightblue',
     justifyContent: 'center',
     height: 50,
-  },
-  standaloneRowBack: {
-    // alignSelf: 'flex-end',
-    backgroundColor: 'green',
-    flex: 1,
-    // width: 75,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 15,
-    // marginLeft: 100
-  },
-  backTextWhite: {
-    color: '#FFF',
-  },
-  listBody: {
-    // width: '100%',
-    // backgroundColor: '#24962c',
-    // // borderRadius: 5,
-    // height: 50,
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    // paddingLeft: 25,
-    // marginRight: 10,
-    // marginTop: 10
   },
   individualList: {
     width: '100%',
@@ -130,7 +96,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: 'lightblue',
+    // backgroundColor: 'lightblue',
     // alignItems: 'flex-end',
     // justifyContent: 'center',
   },
