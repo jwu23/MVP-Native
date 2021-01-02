@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import * as firebase from 'firebase';
 import LoginScreen from './LoginScreen.js';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default class SignOutScreen extends React.Component {
 
@@ -17,11 +18,13 @@ export default class SignOutScreen extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <TouchableOpacity style={styles.logoutButton} onPress={this.handleLogout}>
-          <Text>Log Out</Text>
-        </TouchableOpacity>
-      </View>
+      <LinearGradient colors={['blue', 'orange', 'green']} style={{flex: 1, opacity: .75}} start={{ x: 1, y: 0 }} end={{ x: 0, y: 1 }}>
+        <View style={styles.container}>
+          <TouchableOpacity style={styles.logoutButton} onPress={this.handleLogout}>
+            <Text>Log Out</Text>
+          </TouchableOpacity>
+        </View>
+      </LinearGradient>
     )
   }
 }
@@ -29,7 +32,7 @@ export default class SignOutScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'lightblue',
+    // backgroundColor: 'lightblue',
     alignItems: 'center',
     justifyContent: 'center',
   },
