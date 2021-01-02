@@ -60,7 +60,7 @@ export default class FriendScreen extends React.Component {
 
   render() {
     return (
-      <LinearGradient colors={['blue', 'orange']} style={{flex: 1}} start={{ x: 0, y: 1 }} end={{ x: 1, y: 0 }}>
+      <LinearGradient colors={['orange', 'green', 'blue']} style={{flex: 1}} start={{ x: 1, y: 0 }} end={{ x: 0, y: 1 }}>
         <View style={styles.container}>
           <ScrollView>
             <View>

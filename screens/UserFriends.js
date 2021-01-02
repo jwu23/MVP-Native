@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Modal, ScrollView } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Modal, ScrollView, Animated } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as firebase from 'firebase';
 // import Collapsible from 'react-native-collapsible';
@@ -8,6 +8,9 @@ import { List } from 'react-native-paper';
 import Swipeout from 'react-native-swipeout';
 import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view';
 import SearchableDropdown from 'react-native-searchable-dropdown';
+import { LinearGradient } from 'expo-linear-gradient';
+import * as GestureHandler from 'react-native-gesture-handler';
+const { Swipeable } = GestureHandler;
 
 export default class UserFriends extends React.Component {
   constructor(props) {
@@ -91,8 +94,6 @@ export default class UserFriends extends React.Component {
       var pending = [];
       var incoming = [];
       snapshot.forEach(request => {
-        // console.log('here', typeof(request.val().user1))
-        // console.log('here', request.val().user2)
         if (request.val().user1 !== undefined && request.val().user2 !== undefined) {
           var sender = request.val().user1;
           var receiver = request.val().user2;
@@ -116,26 +117,17 @@ export default class UserFriends extends React.Component {
     this.getPendingRequests();
   }
 
-  mapFriends = () => {
-    return this.state.userFriends.map((name, index) => {
-      return (
-        <View key={index}>
-          <SwipeRow rightOpenValue={-75}>
-            <TouchableOpacity style={styles.standaloneRowBack} onPress={() => console.log('detete')}>
-              <Text style={styles.backTextWhite}>Delete</Text>
-            </TouchableOpacity>
-            <View style={styles.listBody}>
-              <Text>{name.name}</Text>
-            </View>
-          </SwipeRow>
-        </View>
-      )
+  openCloseListModal = () => {
+    this.setState({
+      listModalVisible: !this.state.listModalVisible
     })
   }
 
-  // addToUserFriends = (user) => {
-  //   firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/friends/' + user.uid).set({email: user.email, name: user.name})
-  // }
+  deleteFriend = (name) => {
+    console.log('fjlksdfjlsk', name.uid)
+    firebase.database().ref('users/' + name.uid + '/friends/' + firebase.auth().currentUser.uid).remove();
+    firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/friends/' + name.uid).remove();
+  }
 
   acceptRequest = (user) => {
     console.log('k;sfjs;jf;', user)
@@ -161,16 +153,11 @@ export default class UserFriends extends React.Component {
   }
 
   declineRequest = (user) => {
-    // console.log('decline', user)
     firebase.database().ref('requests/').on('value', snapshot => {
-      // console.log('snaphereeeee', snapshot)
       var currSearch = this.state.searchUsers;
-      // console.log('1',currSearch)
-
       snapshot.forEach(request => {
         if (request.val().user1.email === user.email && request.val().user2.email === firebase.auth().currentUser.email) {
           currSearch.push(request.val().user1)
-          // console.log('pushed', request.val().user1)
           firebase.database().ref('requests/' + request.key).remove();
         }
       })
@@ -180,46 +167,151 @@ export default class UserFriends extends React.Component {
     })
   }
 
+  cancelRequest = (user) => {
+    firebase.database().ref('requests/').on('value', snapshot => {
+      var currSearch = this.state.searchUsers;
+      snapshot.forEach(request => {
+        if (request.val().user2.email === user.email && request.val().user1.email === firebase.auth().currentUser.email) {
+          currSearch.push(request.val().user2)
+          firebase.database().ref('requests/' + request.key).remove();
+        }
+      })
+      this.setState({
+        searchUsers: currSearch
+      })
+    })
+  }
+
+  rightActionsFriends = (progress, drag, name) => {
+    const scale = drag.interpolate({
+      inputRange: [-75, 0],
+      outputRange: [1, 0],
+      extrapolate: 'clamp'
+    })
+    return (
+      <TouchableOpacity onPress={() => this.deleteFriend(name)}>
+        <View style={styles.rightAction}>
+          <Animated.Text style={[styles.actionText, { transform: [{ scale }]}]}>Delete</Animated.Text>
+        </View>
+      </TouchableOpacity>
+    )
+  }
+
+  mapFriends = () => {
+    return this.state.userFriends.map((name, index) => {
+      return (
+        <View key={index}>
+          {/* <SwipeRow rightOpenValue={-75}>
+            <View style={styles.standaloneRowBack}>
+              <TouchableOpacity style={[styles.backRightBtn, styles.backRightBtnRight]} onPress={() => this.deleteFriend(name)}>
+                <Text style={styles.backTextWhite}>Delete</Text>
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity activeOpacity={1} style={styles.listBody} onPress={() => this.props.navigation.navigate('Details', {user: name})}>
+              <Text style={styles.textColor}>{name.name}</Text>
+            </TouchableOpacity>
+          </SwipeRow> */}
+          <Swipeable renderRightActions={(progress, drag, name) => this.rightActionsFriends(progress, drag, name)}>
+            <TouchableOpacity activeOpacity={1} style={styles.listBody} onPress={() => this.props.navigation.navigate('Details', {user: name})}>
+              <Text style={styles.textColor}>{name.name}</Text>
+            </TouchableOpacity>
+          </Swipeable>
+        </View>
+      )
+    })
+  }
+
+  leftActionsRequests = (progress, drag, user) => {
+    const scale = drag.interpolate({
+      inputRange: [0, 75],
+      outputRange: [0, 1],
+      extrapolate: 'clamp'
+    })
+    return (
+      <TouchableOpacity onPress={() => this.declineRequest(user)}>
+        <View style={styles.rightAction}>
+          <Animated.Text style={[styles.actionText, { transform: [{ scale }]}]}>Delete</Animated.Text>
+        </View>
+      </TouchableOpacity>
+    )
+  }
+
+  rightActionsRequests = (progress, drag, user) => {
+    const scale = drag.interpolate({
+      inputRange: [-75, 0],
+      outputRange: [1, 0],
+      extrapolate: 'clamp'
+    })
+    return (
+      <TouchableOpacity onPress={() => this.acceptRequest(user)}>
+        <View style={styles.rightActionRequests}>
+          <Animated.Text style={[styles.actionText, { transform: [{ scale }]}]}>Accept</Animated.Text>
+        </View>
+      </TouchableOpacity>
+    )
+  }
+
   mapRequests = () => {
     return this.state.incomingRequests.map((user, index) => {
       return (
         <View key={index}>
-          <SwipeRow rightOpenValue={-150}>
+          {/* <SwipeRow rightOpenValue={-150}>
             <View style={styles.standaloneRowBack}>
-              {/* <TouchableOpacity style={{backgroundColor: 'red'}} onPress={() => console.log('detete')}>
-                <Text style={styles.backTextWhite}>Delete</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => console.log('add')}>
-                <Text style={styles.backTextWhite}>add</Text>
-              </TouchableOpacity> */}
-              <TouchableOpacity style={[styles.backRightBtn, styles.backRightBtnRight]} onPress={() => this.acceptRequest(user)}>
-                <Text style={styles.backTextWhite}>Accept</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[styles.backRightBtn, styles.backRightBtnLeft]} onPress={() => this.declineRequest(user)}>
+              <TouchableOpacity style={[styles.backRightBtn, styles.backRightBtnRight]} onPress={() => this.declineRequest(user)}>
                 <Text style={styles.backTextWhite}>Decline</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.backRightBtn, styles.backRightBtnLeft]} onPress={() => this.acceptRequest(user)}>
+                <Text style={styles.backTextWhite}>Accept</Text>
               </TouchableOpacity>
             </View>
             <View style={styles.listBody}>
-              <Text>{user.name}</Text>
+              <Text style={styles.textColor}>{user.name}</Text>
             </View>
-          </SwipeRow>
+          </SwipeRow> */}
+          <Swipeable renderLeftActions={(progress, drag, user) => this.leftActionsRequests(progress, drag, user)} renderRightActions={(progress, drag, user) => this.rightActionsRequests(progress, drag, user)}>
+            <View style={styles.listBody}>
+                <Text style={styles.textColor}>{user.name}</Text>
+            </View>
+          </Swipeable>
         </View>
       )
     })
+  }
+
+  rightActionsPending = (progress, drag, user) => {
+    const scale = drag.interpolate({
+      inputRange: [-75, 0],
+      outputRange: [1, 0],
+      extrapolate: 'clamp'
+    })
+    return (
+      <TouchableOpacity onPress={() => this.cancelRequest(user)}>
+        <View style={styles.rightAction}>
+          <Animated.Text style={[styles.actionText, { transform: [{ scale }]}]}>Delete</Animated.Text>
+        </View>
+      </TouchableOpacity>
+    )
   }
 
   mapPending = () => {
     return this.state.pendingRequests.map((user, index) => {
       return (
         <View key={index}>
-          <SwipeRow rightOpenValue={-150}>
-            <TouchableOpacity style={styles.standaloneRowBack} onPress={() => console.log('detete')}>
-              <Text style={styles.backTextWhite}>Delete</Text>
-            </TouchableOpacity>
-            <View style={styles.listBody}>
-              <Text>{user.name}</Text>
+          {/* <SwipeRow rightOpenValue={-75}>
+            <View style={styles.standaloneRowBack}>
+              <TouchableOpacity style={[styles.backRightBtn, styles.backRightBtnRight]} onPress={() => this.cancelRequest(user)}>
+                <Text style={styles.backTextWhite}>Cancel</Text>
+              </TouchableOpacity>
             </View>
-          </SwipeRow>
+            <View style={styles.listBody}>
+              <Text style={styles.textColor}>{user.name}</Text>
+            </View>
+          </SwipeRow> */}
+          <Swipeable renderRightActions={(progress, drag, user) => this.rightActionsPending(progress, drag, user)}>
+            <View style={styles.listBody}>
+              <Text style={styles.textColor}>{user.name}</Text>
+            </View>
+          </Swipeable>
         </View>
       )
     })
@@ -248,9 +340,9 @@ export default class UserFriends extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <View style={styles.container1}>
-          {/* <TextInput style={styles.searchFriend} placeholder="Search"> */}
+      <LinearGradient colors={['blue', 'orange']} style={{flex: 1, opacity: .75}} start={{ x: 1, y: 0 }} end={{ x: 0, y: 1 }}>
+        <View style={styles.container}>
+          <View style={styles.container1}>
             <SearchableDropdown
               onItemSelect={(friend) => {
                 this.sendFriendRequest(friend)
@@ -258,7 +350,7 @@ export default class UserFriends extends React.Component {
               containerStyle={{
                 width: '100%',
                 // backgroundColor: '#24962c',
-                backgroundColor: 'lightblue',
+                // backgroundColor: 'lightblue',
                 borderRadius: 5,
                 // height: 50,
                 // alignItems: 'center',
@@ -268,10 +360,6 @@ export default class UserFriends extends React.Component {
                 marginTop: '15%'
                 // padding: 5
               }}
-              // onRemoveItem={(item, index) => {
-              //   const items = this.state.selectedItems.filter((sitem) => sitem.id !== item.id);
-              //   this.setState({ selectedItems: items });
-              // }}
               itemStyle={{
                 padding: 10,
                 marginTop: 2,
@@ -288,12 +376,13 @@ export default class UserFriends extends React.Component {
               textInputProps={
                 {
                   placeholder: 'Search',
+                  placeholderTextColor: 'white',
                   underlineColorAndroid: "transparent",
                   style: {
                       padding: 12,
                       borderWidth: 1,
-                      borderColor: '#ccc',
-                      borderRadius: 5,
+                      borderColor: 'white',
+                      // borderRadius: 5,
                   },
                   // onTextChange: text => alert(text)
                 }
@@ -304,28 +393,50 @@ export default class UserFriends extends React.Component {
                 }
               }
           />
-          {/* </TextInput> */}
+          </View>
+          <ScrollView>
+            <View style={{width: '100%', alignItems: 'center', justifyContent: 'center', height: 50, backgroundColor: 'green'}}>
+              <Text style={styles.textColor}>Friends</Text>
+            </View>
+            {this.mapFriends()}
+            <View style={{width: '100%', alignItems: 'center', justifyContent: 'center', height: 50, backgroundColor: 'orange'}}>
+              <Text style={styles.textColor}>Requests</Text>
+            </View>
+            {this.mapRequests()}
+            <View style={{width: '100%', alignItems: 'center', justifyContent: 'center', height: 50, backgroundColor: 'blue'}}>
+              <Text style={styles.textColor}>Pending</Text>
+            </View>
+            {this.mapPending()}
+          </ScrollView>
         </View>
-        <ScrollView>
-          <View style={{width: '100%', alignItems: 'center', justifyContent: 'center', height: 50, backgroundColor: 'orange'}}>
-            <Text>Friends</Text>
-          </View>
-          {this.mapFriends()}
-          <View style={{width: '100%', alignItems: 'center', justifyContent: 'center', height: 50, backgroundColor: 'red'}}>
-            <Text>Requests</Text>
-          </View>
-          {this.mapRequests()}
-          <View style={{width: '100%', alignItems: 'center', justifyContent: 'center', height: 50, backgroundColor: 'blue'}}>
-            <Text>Pending</Text>
-          </View>
-          {this.mapPending()}
-        </ScrollView>
-      </View>
+      </LinearGradient>
     )
   }
 }
 
 const styles = StyleSheet.create({
+  textColor: {
+    color: 'white'
+  },
+  rightAction: {
+    backgroundColor: 'red',
+    justifyContent: 'center',
+    alignItems: 'flex-end'
+    // flex: 1
+  },
+  rightActionRequests: {
+    backgroundColor: 'green',
+    justifyContent: 'center',
+    alignItems: 'flex-end'
+    // flex: 1
+  },
+  actionText: {
+    color: 'white',
+    fontWeight: '600',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 17
+  },
   backRightBtn: {
     alignItems: 'center',
     bottom: 0,
@@ -335,11 +446,11 @@ const styles = StyleSheet.create({
     width: 75,
   },
   backRightBtnLeft: {
-    backgroundColor: 'red',
+    backgroundColor: 'blue',
     right: 75,
   },
   backRightBtnRight: {
-    backgroundColor: 'blue',
+    backgroundColor: 'red',
     right: 0,
   },
   standaloneRowFront: {
@@ -364,7 +475,7 @@ const styles = StyleSheet.create({
   },
   listBody: {
     width: '100%',
-    backgroundColor: '#24962c',
+    // backgroundColor: '#24962c',
     // borderRadius: 5,
     height: 50,
     alignItems: 'center',
@@ -386,12 +497,12 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: 'lightblue',
+    // backgroundColor: 'lightblue',
     // alignItems: 'flex-end',
     // justifyContent: 'center',
   },
   container1: {
-    backgroundColor: 'lightblue',
+    // backgroundColor: 'lightblue',
     alignItems: 'flex-end',
     justifyContent: 'center',
   },
