@@ -1,11 +1,10 @@
 import React from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Modal, ScrollView, Animated } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import * as firebase from 'firebase';
-import Collapsible from 'react-native-collapsible';
-import Accordion from 'react-native-collapsible';
+import firebase from 'firebase';
+// import Accordion from 'react-native-collapsible';
 import { List } from 'react-native-paper';
-import Swipeout from 'react-native-swipeout';
+// import Swipeout from 'react-native-swipeout';
 import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as GestureHandler from 'react-native-gesture-handler';
@@ -150,7 +149,7 @@ export default class UserLists extends React.Component {
 
   render() {
     return (
-      <LinearGradient colors={['blue', 'orange']} style={{flex: 1, opacity: .75}} start={{ x: 0, y: 1 }} end={{ x: 1, y: 0 }}>
+      <LinearGradient colors={['blue', 'orange']} style={{flex: 1, opacity: .8}} start={{ x: 0, y: 1 }} end={{ x: 1, y: 0 }}>
         <View style={styles.container1}>
           <TouchableOpacity style={styles.newList} onPress={this.openCloseListModal}>
             <Ionicons name='add' color={'black'} size={20}/>
@@ -162,7 +161,7 @@ export default class UserLists extends React.Component {
             {this.mapLists()}
           </View>
         </ScrollView>
-        <Modal animationType="slide" transparent={true} visible={this.state.listModalVisible}>
+        <Modal animationType="fade" transparent={true} visible={this.state.listModalVisible}>
           <LinearGradient colors={['blue', 'orange']} style={{flex: 1}} start={{ x: 0, y: 1 }} end={{ x: 1, y: 0 }}>
             <View style={styles.modalView}>
               <View style={styles.inputView}>
@@ -214,9 +213,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    // backgroundColor: 'lightblue',
-    // alignItems: 'flex-end',
-    // justifyContent: 'center',
   },
   container1: {
     // backgroundColor: 'lightblue',
@@ -225,7 +221,6 @@ const styles = StyleSheet.create({
   },
   newList: {
     width: '20%',
-    // backgroundColor: '#24962c',
     backgroundColor: '#0576ff',
     borderRadius: 25,
     height: 50,
@@ -236,7 +231,6 @@ const styles = StyleSheet.create({
   },
   newItem: {
     flex: 3.5,
-    // backgroundColor: 'white',
     borderRadius: 10,
     borderWidth: 1,
     borderColor: 'white',
@@ -246,12 +240,10 @@ const styles = StyleSheet.create({
   addItemButton: {
     flex: 1,
     padding: 5,
-    // backgroundColor: 'lightblue',
   },
   modalView: {
     alignItems: 'center',
     justifyContent: 'center',
-    // backgroundColor: 'lightblue',
     marginBottom: '50%',
     height: '100%',
   },
@@ -273,8 +265,6 @@ const styles = StyleSheet.create({
   },
   newListButton: {
     width: '80%',
-    // backgroundColor: '#24962c',
-    // backgroundColor: '#0576ff',
     borderRadius: 25,
     borderWidth: 1,
     borderColor: 'white',
