@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
-import * as firebase from 'firebase';
+import firebase from 'firebase';
 import { LinearGradient } from 'expo-linear-gradient';
 
 export default class HomeScreen extends React.Component {
@@ -14,7 +14,46 @@ export default class HomeScreen extends React.Component {
       password2: null,
       error: ''
     }
-    this.handleSignUp = this.handleSignUp.bind(this);
+  }
+
+  handleSignUp = () => {
+    try {
+      if (this.state.firstName === null || this.state.lastName === null || this.state.email === null || this.state.password1 === null || this.state.password2 === null) {
+        this.onRegisterFail('Please fill out all fields')
+      } else if (this.state.password1 !== this.state.password2) {
+        this.onRegisterFail('Passwords must match')
+      } else {
+        try {
+          firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password1)
+          .then((cred) => {
+            console.log(cred.user.uid)
+            cred.user.updateProfile({
+              displayName: `${this.state.firstName} ${this.state.lastName}`
+            })
+            firebase.database().ref('users/' + cred.user.uid).set({
+              first: this.state.firstName,
+              last: this.state.lastName,
+              email: this.state.email
+            })
+            alert('Account Created');
+          })
+          .catch((err) => {
+            let code = err.code;
+            if (code === 'auth/invalid-email') {
+              this.onRegisterFail('Email is invalid')
+            } else if (code === 'auth/weak-password') {
+              this.onRegisterFail('Password must be at least 6 characters')
+            }
+          })
+        }
+        catch (err) {
+          console.log(err.toString())
+        }
+      }
+    }
+    catch (err) {
+      console.log(err.toString())
+    }
   }
 
   onRegisterFail = (errorMessage) => {
@@ -23,52 +62,19 @@ export default class HomeScreen extends React.Component {
     })
   }
 
-  handleSignUp = async () => {
-    try {
-      if (this.state.firstName === null || this.state.lastName === null || this.state.email === null || this.state.password1 === null || this.state.password2 === null) {
-        // alert('Please fill out all fields');
-        this.onRegisterFail.bind(this)('Please fill out all fields')
-        // return;
-      } else if (this.state.password1 !== this.state.password2) {
-        // alert('Passwords must match');
-        this.onRegisterFail.bind(this)('Passwords must match')
-        // return;
-      } else {
-        firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password1).then((cred) => {
-          console.log(cred.user.uid)
-          cred.user.updateProfile({
-            displayName: `${this.state.firstName} ${this.state.lastName}`
-          })
-          firebase.database().ref('users/' + cred.user.uid).set({
-            first: this.state.firstName,
-            last: this.state.lastName,
-            email: this.state.email
-          })
-        })
-        alert('Account Created');
-      }
-    }
-    catch (err) {
-      console.log(err.toString())
-    }
-  }
-
   backToLogin = () => {
     this.props.navigation.navigate('LoginScreen');
   }
 
   render() {
     return (
-      <LinearGradient colors={['blue', 'orange']}
-    style={{flex: 1, opacity: .75}}
-    //  Linear Gradient
-    start={{ x: 1, y: 0 }}
-    end={{ x: 0, y: 1 }}>
-
+      <LinearGradient colors={['blue', 'orange']} style={{flex: 1, opacity: .75}} start={{ x: 1, y: 0 }} end={{ x: 0, y: 1 }}>
         <KeyboardAvoidingView
         behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
         style={styles.container}>
-          <Text style={styles.title}>Create An Account</Text>
+          <View>
+            <Text style={styles.title}>Create An Account</Text>
+          </View>
           <View style={styles.inputView}>
             <TextInput style={styles.inputText} autoCorrect={false} autoCapitalize = 'none' placeholder="First Name" placeholderTextColor='white' onChangeText={text => this.setState({firstName: text})}></TextInput>
           </View>
