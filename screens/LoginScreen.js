@@ -1,8 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
-import RegisterScreen from './RegisterScreen.js';
-import * as firebase from 'firebase';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import firebase from 'firebase';
 import { LinearGradient } from 'expo-linear-gradient';
 
 export default class LoginScreen extends React.Component {
@@ -13,8 +12,6 @@ export default class LoginScreen extends React.Component {
       password: '',
       error: ''
     }
-    this.handleLogin = this.handleLogin.bind(this);
-    this.handleSignUp = this.handleSignUp.bind(this);
   }
 
   handleLogin = () => {
@@ -26,13 +23,13 @@ export default class LoginScreen extends React.Component {
         .catch((err) => {
           let code = err.code;
           if (this.state.email === '') {
-            this.onLoginFail.bind(this)('Please enter an email')
+            this.onLoginFail('Please enter an email')
           } else if (code === 'auth/user-not-found') {
-            this.onLoginFail.bind(this)('There is no account with this email.')
+            this.onLoginFail('There is no account with this email.')
           } else if (code === 'auth/invalid-email') {
-            this.onLoginFail.bind(this)('Email is wrong')
+            this.onLoginFail('Email is invalid')
           } else {
-            this.onLoginFail.bind(this)('Email/Password combination is incorrect')
+            this.onLoginFail('Email/Password combination is incorrect')
           }
         })
     }
@@ -48,19 +45,16 @@ export default class LoginScreen extends React.Component {
   }
 
   handleSignUp = () => {
-    console.log('want to sign up')
     this.props.navigation.navigate('RegisterScreen');
   }
 
   render() {
     return (
-    <LinearGradient colors={['blue', 'orange']}
-    style={{flex: 1, opacity: .75}}
-    //  Linear Gradient
-    start={{ x: 1, y: 0 }}
-    end={{ x: 0, y: 1 }}>
-      <View style={styles.container}>
-        <Text style={styles.logo}>MVP</Text>
+    <LinearGradient colors={['blue', 'orange']} style={{flex: 1, opacity: .8}} start={{ x: 1, y: 0 }} end={{ x: 0, y: 1 }}>
+      <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? 'padding' : 'height'} style={styles.container}>
+        <View>
+          <Text style={styles.logo}>ListMe</Text>
+        </View>
         <View style={styles.inputView}>
           <TextInput style={styles.inputText} autoCorrect={false} autoCapitalize = 'none' placeholder='Email' placeholderTextColor='white' onChangeText={text => this.setState({email: text})}></TextInput>
         </View>
@@ -75,7 +69,7 @@ export default class LoginScreen extends React.Component {
           <Text style={styles.textColor}>Don't have an account? Register</Text>
         </TouchableOpacity>
         <StatusBar style='auto' />
-      </View>
+      </KeyboardAvoidingView>
     </LinearGradient>
   );
 }
@@ -84,7 +78,6 @@ export default class LoginScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: 'lightblue',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -96,7 +89,6 @@ const styles = StyleSheet.create({
   },
   inputView: {
     width: '80%',
-    // backgroundColor: 'white',
     borderRadius: 25,
     borderWidth: 1,
     borderColor: 'white',
@@ -114,7 +106,6 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     width: '80%',
-    // backgroundColor: 'green',
     borderRadius: 25,
     borderWidth: 1,
     borderColor: 'white',
