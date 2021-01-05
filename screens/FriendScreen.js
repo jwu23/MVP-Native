@@ -17,7 +17,7 @@ export default class FriendScreen extends React.Component {
 
   componentDidMount = () => {
     // console.log('friend list', this.props.route.params)
-    firebase.database().ref('lists/' + this.props.route.params.user.uid).on('value', (snapshot) => {
+    firebase.database().ref('lists/' + this.props.route.params.user.uid + '/public').on('value', (snapshot) => {
       var lists = [];
       snapshot.forEach(child => {
         var temp = child.key;
@@ -32,7 +32,7 @@ export default class FriendScreen extends React.Component {
 
   mapItems = (listName) => {
     var lists = [];
-    firebase.database().ref('lists/' + this.props.route.params.user.uid + `/${listName}`).on('value', (snapshot) => {
+    firebase.database().ref('lists/' + this.props.route.params.user.uid + `/public/${listName}`).on('value', (snapshot) => {
       snapshot.forEach(child => {
         var temp = child.val();
         lists.push(
