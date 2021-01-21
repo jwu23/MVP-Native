@@ -5,9 +5,9 @@ Share public lists with friends and keep private lists to your self.
 
 ## Preview
 
-<img src="./assets/Home.png" height="250">
-<img src="./assets/Lists.png" height="250">
-<img src="./assets/Friends.png" height="250">
+<img src="./assets/Home.png">
+<img src="./assets/Lists.png">
+<img src="./assets/Friends.png">
 
 ## Running Project
 
